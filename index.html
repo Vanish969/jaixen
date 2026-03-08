@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@jaixen</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+cursor:none;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+background:black;
+color:white;
+font-family:sans-serif;
+}
+
+/* ENTER SCREEN */
+
+.enter{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:'Bebas Neue', sans-serif;
+font-size:30px;
+letter-spacing:4px;
+
+backdrop-filter:blur(30px);
+background:rgba(0,0,0,0.35);
+
+cursor:pointer;
+z-index:100;
+transition:1.2s ease;
+}
+
+.enter.fade{
+opacity:0;
+pointer-events:none;
+}
+
+/* BACKGROUND */
+
+.bg{
+position:absolute;
+inset:0;
+background-size:cover;
+background-position:center;
+filter:blur(18px) brightness(40%);
+animation:zoom 25s infinite alternate ease-in-out;
+}
+
+@keyframes zoom{
+from{transform:scale(1.05);}
+to{transform:scale(1.2);}
+}
+
+/* CARD */
+
+.card{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+/* PROFILE GLOW */
+
+.profile {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  /* Silver border */
+  border: 2px solid #c0c0c0;
+
+  /* Subtle silver glow */
+  box-shadow:
+    0 0 3px #c0c0c0,
+    0 0 6px #bbb,
+    0 0 9px #aaa;
+
+  /* Wave / moving glow animation */
+  animation: silverWave 3s infinite alternate;
+}
+
+/* Wave animation: subtle pulsing movement */
+@keyframes silverWave {
+  0% {
+    box-shadow:
+      0 0 2px #c0c0c0,
+      0 0 4px #bbb,
+      0 0 6px #aaa;
+  }
+  50% {
+    box-shadow:
+      0 0 5px #c0c0c0,
+      0 0 10px #bbb,
+      0 0 15px #aaa;
+  }
+  100% {
+    box-shadow:
+      0 0 2px #c0c0c0,
+      0 0 4px #bbb,
+      0 0 6px #aaa;
+  }
+}
+/* USERNAME */
+
+.username {
+  font-family: 'Playfair Display', serif; /* lowercase-friendly font */
+  font-weight: 700; /* bold */
+  font-size: 34px;
+  letter-spacing: 2px;
+  text-transform: lowercase; /* small letters */
+  color: white;
+
+  /* glowing effect */
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #ddd,
+    0 0 15px #bbb;
+}
+
+/* GIF ROW */
+
+.gif-row{
+margin-top:10px;
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.gif-row img{
+width:45px;
+height:45px;
+object-fit:cover;
+border-radius:6px;
+}
+
+/* BIO */
+
+.bio{
+margin-top:12px;
+font-family:'Playfair Display', serif;
+font-size:16px;
+white-space:nowrap;
+overflow:hidden;
+min-height:20px;
+}
+
+/* SOCIALS */
+
+.socials{
+margin-top:20px;
+display:flex;
+justify-content:center;
+gap:18px;
+}
+
+.socials img{
+width:26px;
+height:26px;
+object-fit:contain;
+}
+
+/* VISITS */
+
+.visits{
+margin-top:20px;
+font-size:11px;
+opacity:0.4;
+}
+
+/* CURSOR */
+
+.cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 10px white;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.cursor-follower {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 6px white;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9998;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="enter" onclick="enterSite()">
+doxx me
+</div>
+
+<div class="bg" id="bg"></div>
+
+<div class="card">
+
+<img src="https://i.imgur.com/hZJmi3c.jpeg" class="profile">
+
+<div class="username">jaixen</div>
+
+<!-- 3 GIFS -->
+
+<div class="gif-row">
+
+<img src="https://cdn.discordapp.com/emojis/1181217742850891807.gif">
+<img src="https://cdn.discordapp.com/emojis/1441763213980074138.gif">
+<img src="https://cdn.discordapp.com/emojis/1197092976892059658.gif">
+
+</div>
+
+<div class="bio">
+<span id="typing"></span>
+</div>
+
+<!-- SOCIAL ICONS (IKAW MAGPALIT) -->
+
+<div class="socials">
+
+<a href="https://open.spotify.com/user/31nvw73xrjno3awszcotorzqqlre"><img src="https://i.imgur.com/P30vY7g.png"></a>
+<a href="https://discordapp.com/users/1472004262749012232"><img src="https://i.imgur.com/avA16Ge.png"></a>
+<a href="https://www.roblox.com/users/2955144186/profile"><img src="https://i.imgur.com/dyqAqba.png"></a>
+<a href="https://instagram.com/isthismizael"><img src="https://i.imgur.com/84yV39M.png"></a>
+<a href="https://www.tiktok.com/@jayzen.szn"><img src="https://i.imgur.com/iYwgHfg.png"></a>
+</div>
+
+<div class="visits">
+visitors: <span id="visitCount">0</span>
+</div>
+
+</div>
+
+<div class="cursor"></div>
+<div class="cursor-follower"></div>
+
+<audio id="bgMusic" loop>
+<source src="jaixen.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ENTER */
+
+function enterSite(){
+document.querySelector(".enter").classList.add("fade");
+document.getElementById("bgMusic").play().catch(()=>{});
+startTypingLoop();
+}
+
+/* RANDOM BACKGROUNDS */
+
+const backgrounds = [
+
+"https://i.imgur.com/Y2sWpkY.gif",
+"https://i.imgur.com/mqyyHGC.gif",
+"https://i.imgur.com/GyO3I9r.gif",
+"https://i.imgur.com/7le3MDa.gif",
+"https://i.imgur.com/yDLQGii.gif"
+
+];
+
+function setRandomBackground(){
+
+const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+document.getElementById("bg").style.backgroundImage = `url(${randomBg})`;
+
+}
+
+setRandomBackground();
+
+/* VISITS */
+
+let visits=localStorage.getItem("visits");
+
+visits=visits?Number(visits)+1:1;
+
+localStorage.setItem("visits",visits);
+
+document.getElementById("visitCount").innerText=visits;
+
+/* TYPING LOOP */
+
+function startTypingLoop(){
+
+const text="nag mamahal sainyo rev$hit";
+const el=document.getElementById("typing");
+
+let i=0;
+let deleting=false;
+
+function loop(){
+
+if(!deleting){
+
+el.textContent=text.substring(0,i++);
+
+if(i>text.length){
+deleting=true;
+setTimeout(loop,1200);
+return;
+}
+
+}else{
+
+el.textContent=text.substring(0,i--);
+
+if(i===0){
+deleting=false;
+}
+
+}
+
+setTimeout(loop,deleting?40:70);
+
+}
+
+loop();
+
+}
+
+/* CURSOR */
+
+const cursor = document.querySelector(".cursor");
+const follower = document.querySelector(".cursor-follower");
+
+let posX = 0, posY = 0;
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener("mousemove", e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+
+  // main cursor follows instantly
+  cursor.style.left = mouseX + "px";
+  cursor.style.top = mouseY + "px";
+});
+
+// smooth trailing for follower
+function animate() {
+  posX += (mouseX - posX) * 0.15;
+  posY += (mouseY - posY) * 0.15;
+  follower.style.left = posX + "px";
+  follower.style.top = posY + "px";
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
