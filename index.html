@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@coldhearts</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+overflow:hidden;
+
+
+background: url("https://i.imgur.com/AbuEHRn.jpeg") no-repeat center center fixed;
+background-size: cover;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background: url("https://i.imgur.com/AbuEHRn.jpeg") no-repeat center center;
+background-size: cover;
+filter: blur(12px);
+z-index:-1;
+}
+
+.users{
+display:none;
+flex-wrap:wrap;
+flex-direction:row;
+justify-content:center;
+align-items:center;
+gap:60px;
+opacity:0;
+transform:translateY(20px);
+transition:0.8s ease;
+padding:0 40px; 
+}
+
+.users.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.user{
+position:relative;
+text-align:center;
+}
+
+.avatar{
+width:110px;
+height:110px;
+border-radius:50%;
+object-fit:cover;
+border:2px 0;
+cursor:pointer;
+transition:0.4s ease;
+}
+
+.avatar:hover{
+transform:rotate(360deg) scale(1.1);
+box-shadow:0 0 25px none;
+}
+
+.name{
+margin-top:10px;
+font-weight:700;
+}
+
+.username{
+font-size:12px;
+opacity:0.7;
+}
+
+.status{
+width:14px;
+height:14px;
+border-radius:50%;
+position:absolute;
+top:4px;
+right:6px;
+border:2px solid #111;
+}
+
+.online{background:#3ba55d;}
+.idle{background:#faa61a;}
+.dnd{background:#ed4245;}
+.offline{background:#747f8d;}
+
+.user-popup{
+position:absolute;
+bottom:120%;
+left:50%;
+transform:translateX(-50%) translateY(10px);
+width:240px;
+background:rgba(20,20,20,0.85);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.15);
+border-radius:12px;
+padding:10px;
+display:flex;
+align-items:center;
+gap:10px;
+opacity:0;
+visibility:hidden;
+transition:0.25s;
+z-index:999;
+}
+
+.user-popup.show{
+opacity:1;
+visibility:visible;
+transform:translateX(-50%) translateY(0);
+}
+
+.popup-avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+object-fit:cover;
+border:1px solid white;
+}
+
+.popup-name{
+font-weight:700;
+font-size:14px;
+}
+
+.popup-activity{
+font-size:12px;
+opacity:0.8;
+}
+
+#entry{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+cursor:pointer;
+transition:0.8s ease;
+}
+
+#entry.fade{
+opacity:0;
+transform:scale(1.05);
+pointer-events:none;
+}
+
+.entry-text{
+font-size:19px;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%,100%{opacity:0.3;transform:scale(0.98);}
+50%{opacity:1;transform:scale(1);}
+}
+
+*{
+-webkit-tap-highlight-color: transparent;
+}
+.music-player{
+position:fixed;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+max-width:700px;
+background:rgba(20,20,20,0.6);
+backdrop-filter:blur(20px);
+border-radius:20px;
+padding:15px;
+display:flex;
+align-items:center;
+gap:15px;
+z-index:999;
+}
+
+.cover{
+width:60px;
+height:60px;
+border-radius:10px;
+object-fit:cover;
+}
+
+.music-info{
+flex:1;
+}
+
+.title{
+font-weight:700;
+}
+
+.artist{
+font-size:12px;
+opacity:0.7;
+}
+
+.progress-bar{
+height:4px;
+background:#444;
+border-radius:2px;
+margin-top:8px;
+overflow:hidden;
+}
+
+.progress{
+width:20%;
+height:100%;
+background:white;
+}
+
+.controls button{
+background:none;
+border:none;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+/* Equalizer */
+.equalizer{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:80px;
+display:flex;
+justify-content:center;
+align-items:flex-end;
+gap:6px;
+padding-bottom:10px;
+}
+
+.bar{
+width:4px;
+background:white;
+border-radius:2px;
+animation:jump 1s infinite ease-in-out;
+}
+
+@keyframes jump{
+0%,100%{height:10px;}
+50%{height:50px;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="entry" onclick="enterSite()">
+<div class="entry-text">DOXX US</div>
+</div>
+
+<audio id="bgMusic" loop>
+<source src="TBH.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-player">
+  <img src="https://i.imgur.com/yXlsDRo.jpeg" class="cover">
+
+  <div class="music-info">
+    <div class="title">TBH</div>
+    <div class="artist">PARTYNEXTDOOR</div>
+
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button onclick="prev()"></button>
+    <button onclick="playPause()" id="playBtn"></button>
+    <button onclick="next()"></button>
+  </div>
+</div>
+
+<div class="equalizer" id="eq"></div>
+
+<div class="users" id="usersBox">
+<div class="user" id="u1">Loading...</div>
+<div class="user" id="u2">Loading...</div>
+<div class="user" id="u3">Loading...</div>
+<div class="user" id="u4">Loading...</div>
+</div>
+
+<script>
+const userIDs = [
+"1474753257820917944",
+"1153336356345491547",
+"1453293655321481247",
+"1423306502424498268"
+];
+
+async function loadUser(id, el){
+try{
+
+const res = await fetch(`https://api.lanyard.rest/v1/users/${id}`);
+const json = await res.json();
+
+if(!json.success) return;
+
+const data = json.data;
+const user = data.discord_user;
+const status = data.discord_status;
+
+const avatar = user.avatar
+? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+: `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+const container = document.getElementById(el);
+container.innerHTML = "";
+
+const wrapper = document.createElement("div");
+wrapper.className = "user";
+
+const avatarEl = document.createElement("img");
+avatarEl.className = "avatar";
+avatarEl.src = avatar;
+
+const statusEl = document.createElement("div");
+statusEl.className = `status ${status}`;
+
+const nameEl = document.createElement("div");
+nameEl.className = "name";
+nameEl.innerText = user.global_name || user.username;
+
+const usernameEl = document.createElement("div");
+usernameEl.className = "username";
+usernameEl.innerText = `@${user.username}`;
+
+const popup = document.createElement("div");
+popup.className = "user-popup";
+
+const popupAvatar = document.createElement("img");
+popupAvatar.className = "popup-avatar";
+popupAvatar.src = avatar;
+
+const popupName = document.createElement("div");
+popupName.className = "popup-name";
+popupName.innerText = user.global_name || user.username;
+
+const popupActivity = document.createElement("div");
+popupActivity.className = "popup-activity";
+
+let activityHTML = "No activity";
+
+if(data.spotify){
+const s = data.spotify;
+
+let progress = 0;
+if(s.timestamps){
+const start = s.timestamps.start;
+const end = s.timestamps.end;
+progress = Math.min(100, ((Date.now() - start) / (end - start)) * 100);
+}
+
+activityHTML = `
+<div> ${s.song}</div>
+<div style="opacity:0.7;font-size:12px;">${s.artist}</div>
+<div style="height:3px;background:#444;margin-top:5px;border-radius:2px;">
+<div style="width:${progress}%;height:100%;background:#1db954;border-radius:2px;"></div>
+</div>
+`;
+}
+else if(data.activities && data.activities.length > 0){
+const act = data.activities[0];
+
+if(act.type === 0) activityHTML = `🎮 ${act.name}`;
+else if(act.type === 2) activityHTML = ` ${act.name}`;
+else if(act.type === 3) activityHTML = ` ${act.name}`;
+else if(act.type === 4) activityHTML = ` ${act.state || "Custom Status"}`;
+}
+
+popupActivity.innerHTML = activityHTML;
+
+const textWrap = document.createElement("div");
+textWrap.appendChild(popupName);
+textWrap.appendChild(popupActivity);
+
+popup.appendChild(popupAvatar);
+popup.appendChild(textWrap);
+
+wrapper.appendChild(popup);
+
+avatarEl.addEventListener("click", (e) => {
+e.stopPropagation();
+
+document.querySelectorAll(".user-popup")
+.forEach(p => p.classList.remove("show"));
+
+popup.classList.add("show");
+});
+
+wrapper.appendChild(avatarEl);
+wrapper.appendChild(statusEl);
+wrapper.appendChild(nameEl);
+wrapper.appendChild(usernameEl);
+
+container.appendChild(wrapper);
+
+}catch(err){
+document.getElementById(el).innerHTML="Error";
+}
+}
+
+function enterSite(){
+const entry = document.getElementById("entry");
+const usersBox = document.getElementById("usersBox");
+
+document.getElementById("bgMusic").play().catch(()=>{});
+
+entry.classList.add("fade");
+
+setTimeout(() => {
+entry.style.display = "none";
+usersBox.style.display = "flex";
+
+setTimeout(() => {
+usersBox.classList.add("show");
+}, 50);
+
+userIDs.forEach((id, i) => {
+loadUser(id, "u" + (i+1));
+});
+
+}, 800);
+}
+
+document.addEventListener("click", () => {
+document.querySelectorAll(".user-popup")
+.forEach(p => p.classList.remove("show"));
+});
+
+const audio = document.getElementById("bgMusic");
+const progressBar = document.querySelector(".progress");
+
+function updateProgress() {
+  if (!audio.duration) return;
+
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.style.width = percent + "%";
+}
+
+audio.addEventListener("timeupdate", updateProgress);
+
+function playPause() {
+  const audio = document.getElementById("bgMusic");
+  const btn = document.getElementById("playBtn");
+
+  if (audio.paused) {
+    audio.play();
+    btn.innerText = "";
+  } else {
+    audio.pause();
+    btn.innerText = "";
+  }
+}
+
+</script>
+
+</body>
+</html>
