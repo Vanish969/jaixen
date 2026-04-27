@@ -286,9 +286,9 @@ animation:jump 1s infinite ease-in-out;
   </div>
 
   <div class="controls">
-    <button onclick="prev()"></button>
-    <button onclick="playPause()" id="playBtn"></button>
-    <button onclick="next()"></button>
+    <button onclick="prev()">◀</button>
+    <button onclick="playPause()" id="playBtn">❚❚</button>
+    <button onclick="next()">▶</button>
   </div>
 </div>
 
@@ -383,7 +383,7 @@ activityHTML = `
 else if(data.activities && data.activities.length > 0){
 const act = data.activities[0];
 
-if(act.type === 0) activityHTML = `🎮 ${act.name}`;
+if(act.type === 0) activityHTML = `ðŸŽ® ${act.name}`;
 else if(act.type === 2) activityHTML = ` ${act.name}`;
 else if(act.type === 3) activityHTML = ` ${act.name}`;
 else if(act.type === 4) activityHTML = ` ${act.state || "Custom Status"}`;
@@ -467,10 +467,10 @@ function playPause() {
 
   if (audio.paused) {
     audio.play();
-    btn.innerText = "";
+    btn.innerText = "❚❚";
   } else {
     audio.pause();
-    btn.innerText = "";
+    btn.innerText = "▶";
   }
 }
 
