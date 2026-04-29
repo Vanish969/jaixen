@@ -6,7 +6,7 @@
 <title>@coldhearts</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 <style>
 *{
 margin:0;
@@ -16,16 +16,15 @@ font-family:'Inter',sans-serif;
 }
 
 body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+min-height:100vh;
+display:block;
 color:white;
-overflow:hidden;
+overflow-y:auto;
+overflow-x:hidden;
+padding:40px 0 70px 0;
 
-
-background: url("https://i.imgur.com/AbuEHRn.jpeg") no-repeat center center fixed;
-background-size: cover;
+background:url("https://i.imgur.com/AbuEHRn.jpeg") no-repeat center center fixed;
+background-size:cover;
 }
 
 body::before{
@@ -39,20 +38,22 @@ z-index:-1;
 }
 
 .users{
-display:none;
+display:flex;
 flex-wrap:wrap;
-flex-direction:row;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 gap:60px;
-opacity:0;
+padding:0 40px;
 transform:translateY(20px);
 transition:0.8s ease;
-padding:0 40px; 
+opacity:0;
+visibility:hidden;
 }
 
 .users.show{
 opacity:1;
+visibility:visible;
 transform:translateY(0);
 }
 
@@ -62,8 +63,8 @@ text-align:center;
 }
 
 .avatar{
-width:110px;
-height:110px;
+width:80px;
+height:80px;
 border-radius:50%;
 object-fit:cover;
 border:2px 0;
@@ -177,19 +178,19 @@ animation:pulse 2s infinite;
 -webkit-tap-highlight-color: transparent;
 }
 .music-player{
-position:fixed;
-bottom:40px;
-left:50%;
-transform:translateX(-50%);
+position:relative;
+margin:40px auto 0;
 width:90%;
 max-width:700px;
+
+display:flex;
+align-items:center;
+gap:15px;
+
 background:rgba(20,20,20,0.6);
 backdrop-filter:blur(20px);
 border-radius:20px;
 padding:15px;
-display:flex;
-align-items:center;
-gap:15px;
 z-index:999;
 }
 
@@ -260,19 +261,162 @@ animation:jump 1s infinite ease-in-out;
 0%,100%{height:10px;}
 50%{height:50px;}
 }
+
+.button-trail-container{
+position:relative;
+width:100%;
+margin-top:30px;
+overflow:hidden;
+}
+
+.button-trail-left{
+display:flex;
+gap:12px;
+white-space:nowrap;
+width:max-content;
+animation:moveLeft 30s linear infinite;
+}
+
+@keyframes moveLeft{
+from{transform:translateX(100%);}
+to{transform:translateX(-100%);}
+}
+
+.trail-btn{
+display:flex;
+align-items:center;
+gap:8px;
+padding:6px 10px;
+background:rgba(0,0,0,0.4);
+border-radius:10px;
+font-size:12px;
+color:white;
+text-decoration:none;
+}
+
+.trail-btn img{
+width:22px;
+height:22px;
+border-radius:50%;
+}
+
+.popup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+transform:translateX(-50%);
+width:260px;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:12px;
+padding:12px;
+color:white;
+z-index:9999;
+}
+
+.hidden{
+display:none;
+}
+
+.popup img{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
+.popup-title{
+font-weight:700;
+margin-top:8px;
+}
+
+.popup-activity{
+font-size:12px;
+opacity:0.8;
+margin-top:6px;
+}
+
+
+.main{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:30px;
+  padding-top:30px;
+  padding-bottom:20px;
+}
+
+.header-title{
+  font-family:'UnifrakturCook', cursive;
+  font-size:32px;
+  letter-spacing:6px;
+  text-shadow:0 0 10px rgba(255,255,255,0.6);
+}
+
+.members-section{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+}
+
+.members-title{
+  font-family:'UnifrakturCook', cursive;
+  font-size:18px;
+  letter-spacing:3px;
+  opacity:0.9;
+}
+
+.users{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:45px;
+  padding-top:20px;
+  width:100%;
+}
 </style>
 </head>
 
 <body>
 
+<!-- 1. ENTRY OVERLAY (PINAKA TAAS) -->
 <div id="entry" onclick="enterSite()">
-<div class="entry-text">DOXX US</div>
+  <div class="entry-text">DOXX US</div>
 </div>
 
-<audio id="bgMusic" loop>
-<source src="TBH.mp3" type="audio/mpeg">
-</audio>
+<!-- 2. MAIN WRAPPER -->
+<div class="main">
 
+  <div class="header-title">COLDHEARTS</div>
+
+  
+    <!-- USERS CONTAINER -->
+    <div class="users" id="usersBox">
+      <div class="user" id="u1">Loading...</div>
+      <div class="user" id="u2">Loading...</div>
+      <div class="user" id="u3">Loading...</div>
+      <div class="user" id="u4">Loading...</div>
+      <div class="user" id="u5">Loading...</div>
+    </div>
+
+  </div>
+  
+  <div class="members-section">
+
+    <div class="members-title">MEMBERS</div>
+    
+
+  <!-- TRAIL (dapat inside main kasi UI section siya) -->
+  <div class="button-trail-container">
+    <div class="button-trail-left" id="trailLeft"></div>
+  </div>
+
+</div>
+
+<!-- 3. MUSIC PLAYER (FLOATING UI, OUTSIDE MAIN) -->
 <div class="music-player">
   <img src="https://i.imgur.com/yXlsDRo.jpeg" class="cover">
 
@@ -292,21 +436,24 @@ animation:jump 1s infinite ease-in-out;
   </div>
 </div>
 
-<div class="equalizer" id="eq"></div>
+<!-- 4. POPUP (GLOBAL OVERLAY) -->
+<div id="profilePopup" class="popup hidden"></div>
 
-<div class="users" id="usersBox">
-<div class="user" id="u1">Loading...</div>
-<div class="user" id="u2">Loading...</div>
-<div class="user" id="u3">Loading...</div>
-<div class="user" id="u4">Loading...</div>
-</div>
+<!-- 5. AUDIO -->
+<audio id="bgMusic" loop>
+  <source src="TBH.mp3" type="audio/mpeg">
+</audio>
+
+</body>
 
 <script>
+
 const userIDs = [
 "1474753257820917944",
 "1153336356345491547",
 "1453293655321481247",
-"1423306502424498268"
+"1423306502424498268",
+"958614271221182484"
 ];
 
 async function loadUser(id, el){
@@ -431,6 +578,7 @@ entry.classList.add("fade");
 
 setTimeout(() => {
 entry.style.display = "none";
+
 usersBox.style.display = "flex";
 
 setTimeout(() => {
@@ -473,6 +621,79 @@ function playPause() {
     btn.innerText = "▶";
   }
 }
+
+const trailIDs = [
+"1235205702591447091",
+"1475371132583416039",
+"982975445073006633",
+"1255493272902565913",
+"1345670125176623164",
+"1493994546168729702"
+];
+
+async function loadTrail(){
+const container = document.getElementById("trailLeft");
+container.innerHTML = "";
+
+for(const id of trailIDs){
+const res = await fetch(`https://api.lanyard.rest/v1/users/${id}`);
+const json = await res.json();
+if(!json.success) continue;
+
+const u = json.data.discord_user;
+
+const avatar = u.avatar
+? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png`
+: `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+const el = document.createElement("a");
+el.className = "trail-btn";
+el.href = "#";
+
+el.innerHTML = `
+<img src="${avatar}">
+${u.username}
+`;
+
+container.appendChild(el);
+}
+}
+
+loadTrail();
+
+el.innerHTML = `
+<img src="${avatar}">
+${u.username}
+`;
+
+el.onclick = async () => {
+const res2 = await fetch(`https://api.lanyard.rest/v1/users/${id}`);
+const json2 = await res2.json();
+if(!json2.success) return;
+
+const data = json2.data;
+const user = data.discord_user;
+
+let activity = "No activity";
+
+if(data.spotify){
+activity = `🎵 ${data.spotify.song} - ${data.spotify.artist}`;
+}
+else if(data.activities?.length){
+activity = data.activities[0].name || "Active";
+}
+
+const popup = document.getElementById("profilePopup");
+
+popup.innerHTML = `
+<img src="${avatar}">
+<div class="popup-title">${user.username}</div>
+<div class="popup-activity">${activity}</div>
+`;
+
+popup.classList.remove("hidden");
+};
+
 
 </script>
 
